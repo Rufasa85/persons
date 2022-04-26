@@ -14,7 +14,7 @@ const people = [
         name:"Niles",
         role:"TA"
     },
-    {
+          {
         id:3,
         name:"Stefan",
         role:"Student"
@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"))
 
 app.get("/",(req,res)=>{
-    res.sendFile()
+    res.sendFile(path.join(__dirname,"public/index.html"))
 })
 
 app.get("/persons",(req,res)=>{
