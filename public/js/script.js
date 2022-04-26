@@ -1,4 +1,5 @@
 const personList = document.querySelector("#persons");
+const form = document.querySelector("#newPerson")
 
 const getPeople = ()=>{
     fetch("/persons").then(res=>res.json()).then(data=>{
@@ -10,8 +11,6 @@ const getPeople = ()=>{
         })
     })
 }
-
-const form = document.querySelector("#newPerson")
 
 form.addEventListener("submit",e=>{
     e.preventDefault();

@@ -2,28 +2,13 @@ const express = require("express");
 const app = express();
 const PORT = 3000;
 const path = require("path");
-
-const people = [ 
-    {
-        id:1,
-        name:"Joe",
-        role:"Instructor"
-    },
-    {
-        id:2,
-        name:"Niles",
-        role:"TA"
-    },
-          {
-        id:3,
-        name:"Stefan",
-        role:"Student"
-    }
-]
-
+const fs = require("fs");
+//parsing data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+//serves css/js/static assets
 app.use(express.static("public"))
 
 app.get("/",(req,res)=>{
@@ -31,13 +16,35 @@ app.get("/",(req,res)=>{
 })
 
 app.get("/persons",(req,res)=>{
-    res.json(people)
+    fs.readFile("./data/people.json","utf-8",(err,data)=>{
+        if(err){
+            throw err
+        } else {
+            const people = JSON.parse(data);
+            res.json(people)
+        }
+    })
 })
 
 app.post("/persons",(req,res)=>{
-    console.log(req.body);
-    people.push(req.body)
-    res.send("post request recieved")
+    fs.readFile("./data/people.json","utf-8",(err,data)=>{
+        if(err){
+            throw err
+        } else {
+            
+            const people = JSON.parse(data);
+            console.log(req.body)
+            people.push(req.body)
+            fs.writeFile("./data/people.json",JSON.stringify(people,null,2),(err,data)=>{
+                if(err){
+                    throw err
+                }
+                else {
+                    res.json(people)
+                }
+            })
+        }
+    })
 })
 
 app.listen(PORT,()=>{
